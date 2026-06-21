@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { motion, useInView } from "framer-motion";
@@ -43,50 +44,45 @@ export default function Agenda() {
           </Typography>
         </motion.div>
 
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(3, 1fr)" },
-            gap: 4,
-          }}
-        >
+        <Grid container spacing={4}>
           {(items.length > 0 ? items : [
             { title: "Online Certificate Course", description: "An online certificate course for educators in the South Asian region, focusing on inclusive education practices and policies.", icon: "School" },
             { title: "Collaborative Writing Initiatives", description: "Members collaborate on research and writing, bringing together experiences and promising practices related to teacher education, school education and policies for inclusion.", icon: "Groups" },
             { title: "Webinars & Research Sharing", description: "The hub convenes webinars and research-sharing sessions occasionally, fostering dialogue among academics, practitioners and policy-makers.", icon: "RecordVoiceOver" },
           ]).map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 + i * 0.15 }}
-            >
-              <Card
-                sx={{
-                  height: "100%",
-                  bgcolor: "rgba(255,255,255,0.07)",
-                  backdropFilter: "blur(8px)",
-                  color: "white",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  "&:hover": { transform: "translateY(-6px)", boxShadow: "0 12px 40px rgba(0,0,0,0.3)" },
-                }}
+            <Grid item xs={12} md={4} key={i}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.2 + i * 0.15 }}
               >
-                <CardContent sx={{ p: 4 }}>
-                  <Box sx={{ color: "secondary.main", mb: 2 }}>
-                    {iconMap[item.icon] || <SchoolIcon sx={{ fontSize: 40 }} />}
-                  </Box>
-                  <Typography variant="h4" gutterBottom sx={{ color: "#fff" }}>
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body1" sx={{ color: "rgba(255,255,255,0.75)" }}>
-                    {item.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </motion.div>
+                <Card
+                  sx={{
+                    height: "100%",
+                    bgcolor: "rgba(255,255,255,0.07)",
+                    backdropFilter: "blur(8px)",
+                    color: "white",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    transition: "transform 0.3s, box-shadow 0.3s",
+                    "&:hover": { transform: "translateY(-6px)", boxShadow: "0 12px 40px rgba(0,0,0,0.3)" },
+                  }}
+                >
+                  <CardContent sx={{ p: 4 }}>
+                    <Box sx={{ color: "secondary.main", mb: 2 }}>
+                      {iconMap[item.icon] || <SchoolIcon sx={{ fontSize: 40 }} />}
+                    </Box>
+                    <Typography variant="h4" gutterBottom sx={{ color: "#fff" }}>
+                      {item.title}
+                    </Typography>
+                    <Typography variant="body1" sx={{ color: "rgba(255,255,255,0.75)" }}>
+                      {item.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </Grid>
           ))}
-        </Box>
+        </Grid>
       </Container>
     </Box>
   );
