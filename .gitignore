@@ -29,12 +29,10 @@ venv/
 Thumbs.db
 
 # Vite / React
-node_modules/
-dist/
-.vite/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
 
 # Django
 backend/media/
 backend/staticfiles/
-frontend/
-.vercel
