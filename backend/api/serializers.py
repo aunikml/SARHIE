@@ -1,5 +1,28 @@
 from rest_framework import serializers
-from .models import TeamMember, Partner, Initiative, Event
+from .models import (
+    HeroContent, AboutContent, Highlight,
+    TeamMember, Partner, Initiative, Event,
+)
+
+
+class HeroContentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HeroContent
+        fields = "__all__"
+
+
+class HighlightSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Highlight
+        fields = "__all__"
+
+
+class AboutContentSerializer(serializers.ModelSerializer):
+    highlights = HighlightSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = AboutContent
+        fields = "__all__"
 
 
 class TeamMemberSerializer(serializers.ModelSerializer):

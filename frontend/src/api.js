@@ -1,9 +1,11 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api",
 });
 
+export const getHeroContent = () => api.get("/hero/latest/").then((r) => r.data);
+export const getAboutContent = () => api.get("/about/latest/").then((r) => r.data);
 export const getTeamMembers = () => api.get("/team-members/").then((r) => r.data);
 export const getPartners = () => api.get("/partners/").then((r) => r.data);
 export const getInitiatives = () => api.get("/initiatives/").then((r) => r.data);

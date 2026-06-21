@@ -1,11 +1,44 @@
 from rest_framework import viewsets
-from .models import TeamMember, Partner, Initiative, Event
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from .models import (
+    HeroContent, AboutContent, Highlight,
+    TeamMember, Partner, Initiative, Event,
+)
 from .serializers import (
-    TeamMemberSerializer,
-    PartnerSerializer,
-    InitiativeSerializer,
+    HeroContentSerializer, AboutContentSerializer, HighlightSerializer,
+    TeamMemberSerializer, PartnerSerializer, InitiativeSerializer,
     EventSerializer,
 )
+
+
+class HeroContentViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = HeroContent.objects.all()
+    serializer_class = HeroContentSerializer
+
+    @action(detail=False)
+    def latest(self, request):
+        hero = HeroContent.objects.first()
+        if hero:
+            return Response(HeroContentSerializer(hero).data)
+        return Response({})
+
+
+class AboutContentViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = AboutContent.objects.all()
+    serializer_class = AboutContentSerializer
+
+    @action(detail=False)
+    def latest(self, request):
+        about = AboutContent.objects.first()
+        if about:
+            return Response(AboutContentSerializer(about).data)
+        return Response({})
+
+
+class HighlightViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Highlight.objects.all()
+    serializer_class = HighlightSerializer
 
 
 class TeamMemberViewSet(viewsets.ReadOnlyModelViewSet):

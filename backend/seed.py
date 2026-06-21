@@ -4,17 +4,40 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from api.models import TeamMember, Partner, Initiative, Event
+from api.models import (
+    HeroContent, AboutContent, Highlight,
+    TeamMember, Partner, Initiative, Event,
+)
 from django.contrib.auth.models import User
 
 if not User.objects.filter(username="admin").exists():
     User.objects.create_superuser("admin", "admin@example.com", "admin123")
 
-TeamMember.objects.all().delete()
-Partner.objects.all().delete()
-Initiative.objects.all().delete()
-Event.objects.all().delete()
+# --- Hero ---
+HeroContent.objects.all().delete()
+hero = HeroContent.objects.create(
+    acronym="SARHIE",
+    tagline="The South Asia Research Hub for Inclusive Education",
+    description="Forging collaboration on school and teacher education across South Asia \u2014 a collective of academics, practitioners, and policy-makers.",
+    cta_primary_label="Learn More",
+    cta_primary_target="about",
+    cta_secondary_label="Meet the Team",
+    cta_secondary_target="team",
+)
 
+# --- About ---
+AboutContent.objects.all().delete()
+Highlight.objects.all().delete()
+about = AboutContent.objects.create(
+    title="About SARHIE",
+    description="The South Asia Research Hub for Inclusive Education seeks to forge and take forward collaboration on school and teacher education within the region. The research hub is a collective bringing together academics, practitioners and policy-makers working on inclusive education from the region.",
+)
+Highlight.objects.create(about=about, label="Founding Members", value="9", icon_name="Groups", order=1)
+Highlight.objects.create(about=about, label="Partner Institutions", value="7+", icon_name="School", order=2)
+Highlight.objects.create(about=about, label="Countries", value="5", icon_name="Public", order=3)
+
+# --- Team ---
+TeamMember.objects.all().delete()
 members = [
     TeamMember(
         name="Prof. Mythili Ramchand",
@@ -82,20 +105,21 @@ members = [
 ]
 TeamMember.objects.bulk_create(members)
 
+# --- Partners ---
+Partner.objects.all().delete()
 partners = [
     Partner(name="Royal University of Bhutan", order=1),
     Partner(name="Tata Institute of Social Sciences, India", order=2),
     Partner(name="National Institute of Advanced Studies, India", order=3),
     Partner(name="Kathmandu University, Nepal", order=4),
     Partner(name="University of Colombo, Sri Lanka", order=5),
-    Partner(
-        name="Center for the Study of International Cooperation in Education (CICE)",
-        order=6,
-    ),
+    Partner(name="Center for the Study of International Cooperation in Education (CICE)", order=6),
     Partner(name="The IDEC Institute, Hiroshima University", order=7),
 ]
 Partner.objects.bulk_create(partners)
 
+# --- Initiatives ---
+Initiative.objects.all().delete()
 initiatives = [
     Initiative(
         title="Online Certificate Course",

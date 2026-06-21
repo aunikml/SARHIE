@@ -4,20 +4,35 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { motion } from "framer-motion";
+import { getHeroContent } from "../api";
 
-const titleWords = "SARHIE".split("");
-const tagline =
-  "The South Asia Research Hub for Inclusive Education";
+const fallback = {
+  acronym: "SARHIE",
+  tagline: "The South Asia Research Hub for Inclusive Education",
+  description: "Forging collaboration on school and teacher education across South Asia \u2014 a collective of academics, practitioners, and policy-makers.",
+  cta_primary_label: "Learn More",
+  cta_primary_target: "about",
+  cta_secondary_label: "Meet the Team",
+  cta_secondary_target: "team",
+};
 
 export default function Hero() {
+  const [content, setContent] = useState(null);
   const [showSub, setShowSub] = useState(false);
   const [showCTA, setShowCTA] = useState(false);
+
+  useEffect(() => {
+    getHeroContent().then(setContent).catch(() => setContent(fallback));
+  }, []);
 
   useEffect(() => {
     const t1 = setTimeout(() => setShowSub(true), 1600);
     const t2 = setTimeout(() => setShowCTA(true), 2800);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
+
+  const data = content || fallback;
+  const titleWords = (data.acronym || "SARHIE").split("");
 
   return (
     <Box
@@ -63,7 +78,7 @@ export default function Hero() {
                 variant="h5"
                 sx={{ fontWeight: 300, mb: 1, color: "rgba(255,255,255,0.85)", letterSpacing: "0.5px" }}
               >
-                {tagline}
+                {data.tagline}
               </Typography>
             </motion.div>
           )}
@@ -74,28 +89,30 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Typography
-                variant="body1"
-                sx={{ mb: 4, color: "rgba(255,255,255,0.7)", maxWidth: 600, fontSize: "1.1rem" }}
-              >
-                Forging collaboration on school and teacher education across South Asia — a collective of academics, practitioners, and policy-makers.
-              </Typography>
+              {data.description && (
+                <Typography
+                  variant="body1"
+                  sx={{ mb: 4, color: "rgba(255,255,255,0.7)", maxWidth: 600, fontSize: "1.1rem" }}
+                >
+                  {data.description}
+                </Typography>
+              )}
               <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                 <Button
                   variant="contained"
                   color="secondary"
                   size="large"
-                  onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() => document.getElementById(data.cta_primary_target || "about")?.scrollIntoView({ behavior: "smooth" })}
                 >
-                  Learn More
+                  {data.cta_primary_label || "Learn More"}
                 </Button>
                 <Button
                   variant="outlined"
                   size="large"
                   sx={{ color: "white", borderColor: "rgba(255,255,255,0.4)", "&:hover": { borderColor: "#E8A838", color: "#E8A838" } }}
-                  onClick={() => document.getElementById("team")?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() => document.getElementById(data.cta_secondary_target || "team")?.scrollIntoView({ behavior: "smooth" })}
                 >
-                  Meet the Team
+                  {data.cta_secondary_label || "Meet the Team"}
                 </Button>
               </Box>
             </motion.div>
