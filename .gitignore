@@ -8,6 +8,7 @@ build/
 
 # Virtual environment
 backend/venv/
+venv/
 
 # Database
 *.sqlite3
