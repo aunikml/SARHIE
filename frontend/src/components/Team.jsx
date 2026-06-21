@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Collapse from "@mui/material/Collapse";
@@ -109,13 +108,11 @@ export default function Team() {
           </Typography>
         </motion.div>
 
-        <Grid container spacing={3}>
+        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(3, 1fr)" }, gap: 3 }}>
           {(members.length > 0 ? members : fallback).map((m, i) => (
-            <Grid item xs={12} sm={6} lg={4} key={i}>
-              <MemberCard member={m} index={i} inView={inView} />
-            </Grid>
+            <MemberCard key={i} member={m} index={i} inView={inView} />
           ))}
-        </Grid>
+        </Box>
       </Container>
     </Box>
   );
