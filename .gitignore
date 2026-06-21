@@ -7,7 +7,7 @@ dist/
 build/
 
 # Virtual environment
-django_backend/venv/
+backend/venv/
 venv/
 
 # Database
@@ -34,7 +34,7 @@ dist/
 .vite/
 
 # Django
-django_backend/media/
-django_backend/staticfiles/
+backend/media/
+backend/staticfiles/
 frontend/
 .vercel
